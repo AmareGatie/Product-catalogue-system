@@ -1,12 +1,13 @@
 {
-  "name": "Product_catalogue",
+  "name": "back_end",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "server": "nodemon index.js"
+    "server": "nodemon index.js",
+    "build":"npm i"
   },
   "author": "",
   "license": "ISC",
