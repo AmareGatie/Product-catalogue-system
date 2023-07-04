@@ -1,6 +1,6 @@
 const Razorpay =require("razorpay");
 const instance = new Razorpay({
-    key_id:"",key_secret:"I"  
+    key_id:"rzp_test_QK7QW7gKZDzkn2",key_secret:"IWKM84aDdCJpIPNIir60yNdC"  
         // from pyment app api
 })
 const checkout =async(req,res)=>{
