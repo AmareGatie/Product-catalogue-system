@@ -342,7 +342,7 @@ const SingleProduct = () => {
                     return(
                       <div key={index} className="review">
                   <div className="d-flex gap-10 align-items-center">
-                    <h6 className="mb-0">Navdeep</h6>
+                    <h6 className="mb-0">Amare Gatie</h6>
                     <ReactStars
                       count={5}
                       size={24}
