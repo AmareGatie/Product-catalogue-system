@@ -8,25 +8,37 @@ import Container from "../components/Container";
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteCartProduct, getUserCart, updateCartProduct } from "../features/user/userSlice";
 const Cart = () => {
+  const getTokenFromLocalStorage = localStorage.getItem("customer")
+  ? JSON.parse(localStorage.getItem("customer"))
+  : null;  
+const config2 = {
+  headers: {
+    Authorization: `Bearer ${
+      getTokenFromLocalStorage !== null ? getTokenFromLocalStorage.token : ""
+    }`,
+    Accept: "application/json",
+  },
+};
+
   const dispatch = useDispatch();
   const [totalAmount,setTotalAmount]=useState(null);
   const [productUpdateDetail,setproductUpdateDetail]= useState(null);
   const userCartState = useSelector(state=>state.auth.cartProducts)
   useEffect(()=>{
-dispatch(getUserCart());
+dispatch(getUserCart(config2));
   },[]);
   useEffect(()=>{
     if(productUpdateDetail!==null){
       dispatch(updateCartProduct({cartItemId:productUpdateDetail?.cartItemId,quantity:productUpdateDetail?.quantity}))
     setTimeout(()=>{
-      dispatch(getUserCart());
+      dispatch(getUserCart(config2));
     },200)
     }
   },[productUpdateDetail])
   const deleteACartProduct=(id)=>{
-    dispatch(deleteCartProduct(id))
+    dispatch(deleteCartProduct({id:id,config2:config2}))
     setTimeout(()=>{
-      dispatch(getUserCart());
+      dispatch(getUserCart(config2));
     },200)
   }
  useEffect(()=>{
@@ -74,11 +86,11 @@ for (let index = 0; index < userCartState?.length; index++) {
                       <input
                         className="form-control"
                         type="number"
-                        name=""
+                        name={"quantity"+item?._id}
                         min={1}
                         max={10}
-                        id=""
-                        value={productUpdateDetail?.quantity? productUpdateDetail?.quantity :item?.quantity}
+                        id={"cart"+item?._id}
+                        value={item?.quantity}
                         onChange={(e)=>{setproductUpdateDetail({cartItemId:item?._id,quantity: e.target.value})}}
                       />
                     </div>

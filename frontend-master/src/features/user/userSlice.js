@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import { toast } from "react-toastify"
 import { authService } from "./userService";
 
@@ -35,13 +35,22 @@ export const addProdToCart = createAsyncThunk("user/cart/add", async (cartData, 
     }
 });
 
-export const getUserCart = createAsyncThunk("user/cart/get", async (thunkAPI) => {
+export const getUserCart = createAsyncThunk("user/cart/get", async (data,thunkAPI) => {
     try {
-        return await authService.getCart();
+        return await authService.getCart(data);
     } catch (error) {
         return thunkAPI.rejectWithValue(error)
     }
 });
+
+export const deleteUserCart = createAsyncThunk("user/cart/delete", async (data,thunkAPI) => {
+    try {
+        return await authService.emptyCart(data);
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error)
+    }
+});
+
 
 export const getOrders = createAsyncThunk("user/order/get", async (thunkAPI) => {
     try {
@@ -53,9 +62,9 @@ export const getOrders = createAsyncThunk("user/order/get", async (thunkAPI) => 
 
 
 
-export const deleteCartProduct = createAsyncThunk("user/cart/product/delete", async (cartItemId, thunkAPI) => {
+export const deleteCartProduct = createAsyncThunk("user/cart/product/delete", async (data, thunkAPI) => {
     try {
-        return await authService.removeProductFromCart(cartItemId);
+        return await authService.removeProductFromCart(data);
     } catch (error) {
         return thunkAPI.rejectWithValue(error)
     }
@@ -95,7 +104,7 @@ export const createAnOrder = createAsyncThunk("user/cart/create-order", async (o
     }
 });
 
-
+export const resetState= createAction("Reset_all");
 
 
 const getCustomerfromLocalStorage = localStorage.getItem("customer")
@@ -295,10 +304,23 @@ export const authSlice = createSlice({
                 state.isSuccess = false;
                 state.message = action.error;
                 
-            })
+            }).addCase(deleteUserCart.pending, (state) => {
+                state.isLoading = true;
+            }).addCase(deleteUserCart.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.isSuccess = true;
+                state.deletedCart = action.payload;
+                
+            }).addCase(deleteUserCart.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.error;
+                
+            }).addCase(resetState,()=>initialState);
 
     },
 });
 
 export default authSlice.reducer;
-
