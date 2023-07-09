@@ -46,12 +46,14 @@ const Footer = () => {
                   className="mt-3 d-block mb-1 text-white"
                 >
                   +251937398502
+                  +251911345568
                 </a>
                 <a
                   href="mailto:navdeepdahiya753@gmail.com"
                   className="mt-2 d-block mb-0 text-white"
                 >
                   amaregatie2006@gmail.com
+                  kalkidanh89@gmail.com
                 </a>
                 <div className="social_icons d-flex align-items-center gap-30 mt-4">
                   <a className="text-white" href="#">
