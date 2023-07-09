@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BiArrowBack } from "react-icons/bi";
 import watch from "../images/watch.jpg";
 import Container from "../components/Container";
@@ -8,7 +8,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
 import { config } from "../utils/axiosConfig";
-import { createAnOrder } from "../features/user/userSlice";
+import { createAnOrder, deleteUserCart, getUserCart, resetState } from "../features/user/userSlice";
 const shippingSchema = yup.object({
   firstName:yup.string().required("Firist name is required"),
   lastName:yup.string().required("Last name is required"),
@@ -21,10 +21,12 @@ const shippingSchema = yup.object({
 const Checkout = () => {
   const dispatch = useDispatch();
   const cartState = useSelector(state=>state.auth.cartProducts)
+  const authState= useSelector(state=>state.auth)
   const [totalAmount,setTotalAmount]=useState(null);
   const [shippingInfo,setShippingInfo]=useState(null);
-  const [paymentInfo,setPaymentInfo]=useState({razorpayPaymentId:"",razorpayOrderId:""})
+  // const [paymentInfo,setPaymentInfo]=useState({razorpayPaymentId:"",razorpayOrderId:""})
   const [cartProductState,setCartProductState]=useState([]);
+  const navigate= useNavigate();
 
   // console.log(paymentInfo,shippingInfo);
   useEffect(()=>{
@@ -34,6 +36,25 @@ const Checkout = () => {
       setTotalAmount(sum);
     }
      },[cartState])
+     const getTokenFromLocalStorage = localStorage.getItem("customer")
+     ? JSON.parse(localStorage.getItem("customer"))
+     : null;  
+   const config2 = {
+     headers: {
+       Authorization: `Bearer ${
+         getTokenFromLocalStorage !== null ? getTokenFromLocalStorage.token : ""
+       }`,
+       Accept: "application/json",
+     },
+   };
+     useEffect(()=>{
+dispatch(getUserCart(config2));
+     },[])
+     useEffect(()=>{
+      if(authState?.orderedProduct?.order!==null && authState?.orderedProduct?.success=== true){
+        navigate('/my-orders')
+      }
+     },[authState])
      const formik = useFormik({
       initialValues: {
         firstName:"",
@@ -48,9 +69,10 @@ const Checkout = () => {
       validationSchema:shippingSchema,
       onSubmit: values => {
         setShippingInfo(values);
+        localStorage.setItem("address",JSON.stringify(values))
         setTimeout(()=>{
           checkoutHandler()
-        },700)
+        },300)
         
       },
     });
@@ -106,10 +128,16 @@ document.body.appendChild(script)
 
     const result = await axios.post("http://localhost:5000/api/user/order/paymentVerification", data,config);
     // alert(result);
-    setPaymentInfo({ razorpayPaymentId: response.razorpay_payment_id,
-      razorpayOrderId: response.razorpay_order_id,})
+    // await setPaymentInfo({ 
+    //   razorpayPaymentId: result.razorpay_payment_id,
+    //   razorpayOrderId: result.razorpay_order_id
+    // })
+       dispatch(createAnOrder({totalPrice:totalAmount,totalPriceAfterDiscount:totalAmount,orderItems:cartProductState,paymentInfo:result.data,shippingInfo:JSON.parse(localStorage.getItem("address"))}))
+       dispatch(deleteUserCart(config2))
+       localStorage.removeItem("address")
+       dispatch(resetState());
       
-      dispatch(createAnOrder({totalPrice:totalAmount,totalPriceAfterDiscount:totalAmount,orderItems:cartProductState,paymentInfo,shippingInfo}))
+     
       },
       prefill: {
           name: "Amare Gatie",

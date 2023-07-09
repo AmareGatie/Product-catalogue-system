@@ -10,6 +10,7 @@ import{useDispatch, useSelector} from "react-redux"
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import { getAProduct } from "../features/products/productSlice";
+import { getUserCart } from "../features/user/userSlice";
 const Header = () => {
   const dispatch= useDispatch();
   const [total,setTotal]=useState(null);
@@ -19,6 +20,20 @@ const Header = () => {
   const[productOpt,setProductOpt]=useState([])
   const [paginate, setPaginate] = useState(true);
   const navigate =useNavigate();
+  const getTokenFromLocalStorage = localStorage.getItem("customer")
+  ? JSON.parse(localStorage.getItem("customer"))
+  : null;  
+const config2 = {
+  headers: {
+    Authorization: `Bearer ${
+      getTokenFromLocalStorage !== null ? getTokenFromLocalStorage.token : ""
+    }`,
+    Accept: "application/json",
+  },
+};
+  useEffect(()=>{
+dispatch(getUserCart(config2));
+  },[])
   useEffect(()=>{
     let sum =0
 for (let index = 0; index < cartState?.length; index++) {
@@ -67,9 +82,9 @@ useEffect(()=>{
         <div className="container-xxl">
           <div className="row align-items-center">
             <div className="col-2">
-               <h2>
+               {/* <h2>
                 <Link className="text-white">Chort10</Link>
-              </h2> 
+              </h2>  */}
             </div>
             <div className="col-5">
               <div className="input-group">
@@ -163,7 +178,7 @@ useEffect(()=>{
                     >
                       <img src={menu} alt="" />
                       <span className="me-5 d-inline-block">
-                        Shop Categories
+                        Shop By Categories
                       </span>
                     </button>
                     <ul
@@ -172,17 +187,17 @@ useEffect(()=>{
                     >
                       <li>
                         <Link className="dropdown-item text-white" to="">
-                          Action
+                         Electronics
                         </Link>
                       </li>
                       <li>
                         <Link className="dropdown-item text-white" to="">
-                          Another action
+                          Motors
                         </Link>
                       </li>
                       <li>
                         <Link className="dropdown-item text-white" to="">
-                          Something else here
+                          Clothe and Accessories
                         </Link>
                       </li>
                     </ul>
