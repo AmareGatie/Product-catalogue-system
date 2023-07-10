@@ -47,6 +47,7 @@ const Footer = () => {
                 >
                   +251937398502
                   +251911345568
+                  +251914044176
                 </a>
                 <a
                   href="mailto:navdeepdahiya753@gmail.com"
@@ -54,6 +55,7 @@ const Footer = () => {
                 >
                   amaregatie2006@gmail.com
                   kalkidanh89@gmail.com
+                  sage.h22@gmail.com
                 </a>
                 <div className="social_icons d-flex align-items-center gap-30 mt-4">
                   <a className="text-white" href="#">
