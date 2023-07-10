@@ -39,7 +39,6 @@ const productImgResize = async (req, res, next) => {
     })
   );
   next();
-  sharp.cache(false);
 };
 
 const blogImgResize = async (req, res, next) => {
