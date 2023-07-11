@@ -17,7 +17,7 @@ import SingleBlog from "./pages/SingleBlog";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import RefundPloicy from "./pages/RefundPloicy";
 import ShippingPolicy from "./pages/ShippingPolicy";
-import TermAndContions from "./pages/TermAndContions";
+import TermAndConditions from "./pages/TermAndConditions";
 import SingleProduct from "./pages/SingleProduct";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
