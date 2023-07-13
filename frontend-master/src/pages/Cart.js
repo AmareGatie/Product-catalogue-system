@@ -23,7 +23,7 @@ const config2 = {
   const dispatch = useDispatch();
   const [totalAmount,setTotalAmount]=useState(null);
   const [productUpdateDetail,setproductUpdateDetail]= useState(null);
-  const userCartState = useSelector(state=>state.auth.cartProducts)
+  const userCartState = useSelector(state=>state?.auth?.cartProducts)
   useEffect(()=>{
 dispatch(getUserCart(config2));
   },[]);
@@ -70,7 +70,7 @@ for (let index = 0; index < userCartState?.length; index++) {
                       <img src={watch} className="img-fluid" alt="product image" />
                     </div>
                     <div className="w-75">
-                      <p>{item?.productId.title}</p>
+                      <p>{item?.productId?.title}</p>
                       <p className="d-flex gap-3">
                       <ul className="colors ps-0">
                         <li style={{backgroundColor:item?.color.title}}></li> </ul>
