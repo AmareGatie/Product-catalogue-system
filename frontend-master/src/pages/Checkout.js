@@ -104,7 +104,7 @@ document.body.appendChild(script)
         alert("Razorpay Sdk faild load");
         return;
       }
-      const result = await axios.post("http://localhost:5000/api/user/order/checkout",{amount:totalAmount+5},config)
+      const result = await axios.post("https://product-catalogu.onrender.com/api/user/order/checkout",{amount:totalAmount+5},config)
         if(!result){
           alert("somthing wrong from")
           return;
@@ -126,7 +126,7 @@ document.body.appendChild(script)
               razorpayOrderId: response.razorpay_order_id,
           };
 
-    const result = await axios.post("http://localhost:5000/api/user/order/paymentVerification", data,config);
+    const result = await axios.post("https://product-catalogu.onrender.com/api/user/order/paymentVerification", data,config);
     // alert(result);
     // await setPaymentInfo({ 
     //   razorpayPaymentId: result.razorpay_payment_id,
