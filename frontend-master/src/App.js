@@ -17,7 +17,7 @@ import SingleBlog from "./pages/SingleBlog";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import RefundPloicy from "./pages/RefundPloicy";
 import ShippingPolicy from "./pages/ShippingPolicy";
-import TermAndConditions from "./pages/TermAndConditions";
+import TermAndContions from "./pages/TermAndContions";
 import SingleProduct from "./pages/SingleProduct";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
@@ -53,7 +53,7 @@ function App() {
             <Route path="privacy-policy" element={<PrivacyPolicy />} />
             <Route path="refund-policy" element={<RefundPloicy />} />
             <Route path="shipping-policy" element={<ShippingPolicy />} />
-            <Route path="term-conditions" element={<TermAndConditions />} />
+            <Route path="term-conditions" element={<TermAndContions />} />
           </Route>
         </Routes>
       </BrowserRouter>
